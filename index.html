@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VANTOR.EGY | Sports Nutrition & Apparel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    🔥 شحن مجاني للطلبات فوق 1500 جنيه مصري | الدفع عند الاستلام متاح لجميع المحافظات 🇪🇬
+  </div>
+
+  <!-- Header & Navigation (Pure Customer View - No Admin Button) -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="brand-link">
+        <img src="assets/logo.png" alt="VANTOR.EGY Logo" class="nav-logo-img" />
+        <span class="logo-text">VANTOR<span>.EGY</span></span>
+      </a>
+      
+      <nav class="nav-links">
+        <a href="#products" data-filter="all" class="active" data-i18n="nav_all">الكل</a>
+        <a href="#products" data-filter="apparel" data-i18n="nav_apparel">ملابس رياضية</a>
+        <a href="#products" data-filter="supplements" data-i18n="nav_supplements">مكملات غذائية</a>
+        <a href="#products" data-filter="accessories" data-i18n="nav_accessories">إكسسوارات الجيم</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="search-box">
+          <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="ابحث عن منتج..." />
+        </div>
+        <button id="langToggleBtn" class="btn-outline lang-btn" title="تغيير اللغة / Switch Language">
+          🌐 EN
+        </button>
+        <button id="openCartBtn" class="cart-btn" title="سلة المشتريات">
+          🛒 <span id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner with Logo Background -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="badge" data-i18n="hero_badge">تشكيلة 2026 الحصرية</span>
+        <h1 id="heroTitleEl">ارتقِ بأدائك في الجيم مع <span>VANTOR.EGY</span></h1>
+        <p id="heroSubEl">أقوى خامات الملابس الرياضية الـ Compression والـ Oversized مع أفضل المكملات الأصلية المعتمدة لتصل لأقصى فورمة.</p>
+        <div class="hero-btns">
+          <a href="#products" class="btn-primary" data-i18n="shop_now">تسوق الآن</a>
+          <a href="#features" class="btn-secondary" data-i18n="why_us">ليه تختار VANTOR؟</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Strip -->
+  <section id="features" class="features-strip">
+    <div class="container features-grid">
+      <div class="feature-item">
+        <span class="f-icon">🛡️</span>
+        <div>
+          <h4 data-i18n="feat1_title">مكملات أصلية 100%</h4>
+          <p data-i18n="feat1_desc">مضمونة ومختومة بباركود التحقق</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="f-icon">👕</span>
+        <div>
+          <h4 data-i18n="feat2_title">خامات رياضية احترافية</h4>
+          <p data-i18n="feat2_desc">مقاومة للتعرق ومرونة عالية للتمرين</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="f-icon">🚚</span>
+        <div>
+          <h4 data-i18n="feat3_title">توصيل سريع في مصر</h4>
+          <p data-i18n="feat3_desc">من 2 إلى 4 أيام عمل لباب البيت</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="f-icon">💬</span>
+        <div>
+          <h4 data-i18n="feat4_title">طلب سريع عبر واتساب</h4>
+          <p data-i18n="feat4_desc">تأكيد فوري بالمقاس والنكهة المختارة</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <main id="products" class="products-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="our_products">منتجاتنا المميزة</h2>
+        <div class="filter-tabs" id="filterTabs">
+          <button class="tab-btn active" data-category="all" data-i18n="nav_all">الكل</button>
+          <button class="tab-btn" data-category="apparel" data-i18n="nav_apparel">ملابس رياضية</button>
+          <button class="tab-btn" data-category="supplements" data-i18n="nav_supplements">مكملات غذائية</button>
+          <button class="tab-btn" data-category="accessories" data-i18n="nav_accessories">إكسسوارات</button>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="productGrid" class="product-grid"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a href="#" class="brand-link" style="margin-bottom:10px;">
+          <img src="assets/logo.png" alt="VANTOR.EGY" class="nav-logo-img" />
+          <span class="logo-text">VANTOR<span>.EGY</span></span>
+        </a>
+        <p class="footer-desc" data-i18n="footer_desc">وجهتك الأولى للملابس الرياضية العصرية ومكملات الجيم الأصلية في مصر.</p>
+      </div>
+      <div>
+        <h4 data-i18n="quick_links">روابط سريعة</h4>
+        <ul>
+          <li><a href="#products" data-i18n="all_products">جميع المنتجات</a></li>
+          <li><a href="#features" data-i18n="shipping_policy">سياسة الاستبدال والشحن</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="contact_us">تواصل معنا</h4>
+        <p data-i18n="footer_loc">📍 الإسكندرية / القاهرة - شحن لجميع المحافظات</p>
+        <p>📱 WhatsApp: <span id="footerWhatsappDisplay">01000000000</span></p>
+        <p data-i18n="instagram_line">📸 Instagram: @vantor.egy</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footer_copyright">© 2026 VANTOR.EGY - Elevate Your Performance</span>
+    </div>
+  </footer>
+
+  <!-- Shopping Cart Drawer -->
+  <div id="cartDrawer" class="drawer-overlay">
+    <div class="drawer">
+      <div class="drawer-header">
+        <h3 data-i18n="cart_title">سلة المشتريات 🛒</h3>
+        <button id="closeCartBtn" class="close-btn">&times;</button>
+      </div>
+      <div id="cartItems" class="drawer-body"></div>
+      <div class="drawer-footer">
+        <div class="cart-total">
+          <span data-i18n="total_label">الإجمالي:</span>
+          <strong id="cartTotalPrice">0 ج.م</strong>
+        </div>
+        <button id="checkoutWhatsappBtn" class="btn-whatsapp" data-i18n="whatsapp_checkout">
+          إتمام الطلب عبر واتساب 💬
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Quick View Modal -->
+  <div id="quickViewModal" class="modal-overlay">
+    <div class="modal quick-modal">
+      <button id="closeQuickViewBtn" class="close-btn floating-close">&times;</button>
+      <div id="quickViewContent"></div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="cloud.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

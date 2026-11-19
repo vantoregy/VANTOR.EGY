@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تحكم الإدارة | VANTOR.EGY Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .admin-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at center, #14171e 0%, #07080a 100%);
+    }
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 34px 28px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    }
+    .login-card img {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      border: 2px solid var(--metallic-mid);
+      margin-bottom: 14px;
+    }
+    .dashboard-container {
+      max-width: 1150px;
+      margin: 30px auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+    .dash-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .dash-card h3 {
+      margin-bottom: 16px;
+      color: var(--metallic-shine);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .stat-box h2 {
+      font-size: 2rem;
+      color: var(--metallic-shine);
+    }
+    .stat-box span {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+  <!-- Login Screen (Shown before authentication) -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <img src="assets/logo.png" alt="VANTOR.EGY" />
+      <h2 style="margin-bottom:6px;">بوابة إدارة VANTOR.EGY</h2>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:22px;">
+        صفحة خاصة بصاحب المتجر فقط للتحكم في المنتجات والمخزون وإعدادات الموقع
+      </p>
+      <form id="standaloneLoginForm" style="text-align:right;">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>اسم المستخدم (Username)</label>
+          <input type="text" id="loginUser" placeholder="vantor_admin" required />
+        </div>
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>كلمة المرور (Password)</label>
+          <input type="password" id="loginPass" placeholder="••••••••" required />
+        </div>
+        <p id="loginErr" style="color:#ef4444; font-size:0.88rem; margin-bottom:12px; display:none;">
+          ❌ اسم المستخدم أو كلمة المرور غير صحيحة!
+        </p>
+        <button type="submit" class="btn-primary full-btn">تسجيل الدخول للوحة التحكم 🔐</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard (Shown ONLY after login) -->
+  <div id="dashboardScreen" style="display:none;">
+    <header class="navbar">
+      <div class="container nav-content">
+        <div class="brand-link">
+          <img src="assets/logo.png" alt="VANTOR.EGY" class="nav-logo-img" />
+          <span class="logo-text">VANTOR<span>.ADMIN</span></span>
+        </div>
+        <div class="nav-actions">
+          <a href="index.html" target="_blank" class="btn-outline">👁️ معاينة المتجر</a>
+          <button id="logoutBtn" class="btn-danger-outline">تسجيل خروج</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-container">
+      <!-- Quick Stats -->
+      <div class="stats-row">
+        <div class="stat-box">
+          <h2 id="statTotalProducts">0</h2>
+          <span>إجمالي المنتجات المعروضة</span>
+        </div>
+        <div class="stat-box">
+          <h2 id="statTotalStock">0</h2>
+          <span>إجمالي القطع في المخزن</span>
+        </div>
+        <div class="stat-box">
+          <h2 id="statOutOfStock">0</h2>
+          <span>منتجات نفدت كميتها</span>
+        </div>
+      </div>
+
+      <!-- Site Settings Form -->
+      <div class="dash-card">
+        <h3>⚙️ إعدادات المتجر العامة (واتساب ونصوص الواجهة)</h3>
+        <form id="siteSettingsForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>رقم الواتساب لاستقبال الطلبات (بكود الدولة 20)</label>
+              <input type="text" id="setWhatsapp" placeholder="201000000000" required />
+            </div>
+            <div class="form-group">
+              <label>شريط الإعلانات العلوي (عربي)</label>
+              <input type="text" id="setAnnounceAr" required />
+            </div>
+            <div class="form-group">
+              <label>شريط الإعلانات العلوي (إنجليزي)</label>
+              <input type="text" id="setAnnounceEn" required />
+            </div>
+            <div class="form-group">
+              <label>الوصف الرئيسي في الواجهة (عربي)</label>
+              <input type="text" id="setHeroSubAr" required />
+            </div>
+            <div class="form-group full-width">
+              <label>الوصف الرئيسي في الواجهة (إنجليزي)</label>
+              <input type="text" id="setHeroSubEn" required />
+            </div>
+            <div class="form-group">
+              <label>عنوان الواجهة الرئيسي (عربي) - استخدم HTML بسيط مثل &lt;span&gt;</label>
+              <input type="text" id="setHeroTitleAr" />
+            </div>
+            <div class="form-group">
+              <label>عنوان الواجهة الرئيسي (إنجليزي)</label>
+              <input type="text" id="setHeroTitleEn" />
+            </div>
+            <div class="form-group full-width">
+              <h4>📝 نصوص الموقع بالعربي</h4>
+              <p class="form-hint">عدّل كل نص من خانته مباشرة.</p>
+              <div id="contentFieldsAr" class="form-grid full-width"></div>
+            </div>
+            <div class="form-group full-width">
+              <h4>📝 Website Texts in English</h4>
+              <p class="form-hint">Edit each website text in its own field.</p>
+              <div id="contentFieldsEn" class="form-grid full-width"></div>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">حفظ إعدادات الموقع ✅</button>
+        </form>
+      </div>
+
+      <!-- Add Product Form -->
+      <div class="dash-card">
+        <h3>➕ إضافة منتج جديد للمتجر</h3>
+        <form id="adminAddProductForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>اسم المنتج (عربي) *</label>
+              <input type="text" id="prodNameAr" placeholder="مثال: تيشيرت كومبريشن أسود" required />
+            </div>
+            <div class="form-group">
+              <label>اسم المنتج (إنجليزي) *</label>
+              <input type="text" id="prodNameEn" placeholder="e.g. Black Compression Tee" required />
+            </div>
+            <div class="form-group">
+              <label>القسم *</label>
+              <select id="prodCategory" required>
+                <option value="apparel">ملابس رياضية / Apparel</option>
+                <option value="supplements">مكملات غذائية / Supplements</option>
+                <option value="accessories">إكسسوارات الجيم / Accessories</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>الكمية المتوفرة في المخزن *</label>
+              <input type="number" id="prodStock" min="0" value="15" required />
+            </div>
+            <div class="form-group">
+              <label>السعر الحالي (ج.م) *</label>
+              <input type="number" id="prodPrice" min="1" placeholder="450" required />
+            </div>
+            <div class="form-group">
+              <label>السعر قبل الخصم (اختياري)</label>
+              <input type="number" id="prodOldPrice" min="1" placeholder="550" />
+            </div>
+            <div class="form-group">
+              <label>المقاسات المتاحة (افصل بفاصلة , )</label>
+              <input type="text" id="prodSizes" placeholder="S, M, L, XL (اتركه فارغاً لو لا يوجد)" />
+            </div>
+            <div class="form-group">
+              <label>سعر كل مقاس (اختياري) - مثال: S:400, M:450, L:500, XL:550</label>
+              <input type="text" id="prodSizePrices" placeholder="S:400, M:450, L:500, XL:550" />
+            </div>
+            <div class="form-group">
+              <label>النكهات المتاحة (افصل بفاصلة , )</label>
+              <input type="text" id="prodFlavors" placeholder="شوكولاتة, فانيليا, فراولة" />
+            </div>
+            <div class="form-group">
+              <label>سعر كل نكهة (اختياري) - مثال: شوكولاتة:1200, فانيليا:1250</label>
+              <input type="text" id="prodFlavorPrices" placeholder="شوكولاتة:1200, فانيليا:1250" />
+            </div>
+            <div class="form-group">
+              <label>وصف مختصر (عربي) *</label>
+              <input type="text" id="prodDescAr" placeholder="خامة ليكرا مرنة طاردة للعرق" required />
+            </div>
+            <div class="form-group">
+              <label>وصف مختصر (إنجليزي) *</label>
+              <input type="text" id="prodDescEn" placeholder="Flexible sweat-wicking athletic fabric" required />
+            </div>
+            <div class="form-group">
+              <label>رابط صورة المنتج (URL)</label>
+              <input type="url" id="prodImageUrl" placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label>أو ارفع صورة من جهازك</label>
+              <input type="file" id="prodImageFile" accept="image/*" />
+            </div>
+            <div class="form-group full-width">
+              <label>شارة مميزة (Badge) اختياري</label>
+              <input type="text" id="prodBadge" placeholder="مثال: Best Seller / جديد" />
+            </div>
+          </div>
+          <button type="submit" class="btn-primary full-btn">نشر المنتج في المتجر 🚀</button>
+        </form>
+      </div>
+
+      <!-- Inventory & Products Management -->
+      <div class="dash-card">
+        <div class="admin-list-header">
+          <h3 style="border:none; margin:0; padding:0;">📦 إدارة المنتجات والكميات الحالية (<span id="adminProdCount">0</span>)</h3>
+          <button id="resetAllBtn" type="button" class="btn-danger-outline">استعادة المنتجات الافتراضية</button>
+        </div>
+        <div id="adminInventoryList" class="admin-product-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="cloud.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
