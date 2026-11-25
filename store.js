@@ -118,7 +118,6 @@ function applyLanguage(lang) {
     if (Object.prototype.hasOwnProperty.call(dict, key)) el.placeholder = dict[key];
   });
 
-  // Apply dynamic settings edited from Admin Panel
   document.getElementById("announcementBar").textContent =
     lang === "ar" ? settings.announcementAr : settings.announcementEn;
   document.getElementById("heroTitleEl").innerHTML =
@@ -418,18 +417,10 @@ window.addEventListener("click", e => {
   if (e.target.id === "quickViewModal") document.getElementById("quickViewModal").classList.remove("open");
 });
 
-// Listen for real-time updates if Admin tab modifies products/settings
 window.addEventListener("storage", () => {
   products = getStoreProducts();
   settings = getStoreSettings();
-  if (window.VantorCloud) {
-  window.VantorCloud.init(() => {
-    products = getStoreProducts();
-    settings = getStoreSettings();
-    applyLanguage(currentLang);
-  });
-}
-applyLanguage(currentLang);
+  applyLanguage(currentLang);
 });
 
 if (window.VantorCloud) {

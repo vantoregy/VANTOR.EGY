@@ -236,7 +236,10 @@ function updateStock(id, val) {
   const prod = products.find(p => p.id === id);
   if (!prod) return;
   prod.stock = Math.max(0, Number(val));
-  saveStoreProducts(products);
+  localStorage.setItem("vantor_products_v4", JSON.stringify(products));
+  if (window.VantorCloud && window.VantorCloud.ready) {
+    window.VantorCloud.syncSingleProduct(prod);
+  }
   renderAdminInventory();
 }
 
@@ -298,7 +301,10 @@ function editProduct(id) {
   p.descEn = descEn;
   p.badge = badge;
 
-  saveStoreProducts(products);
+  localStorage.setItem("vantor_products_v4", JSON.stringify(products));
+  if (window.VantorCloud && window.VantorCloud.ready) {
+    window.VantorCloud.syncSingleProduct(p);
+  }
   renderAdminInventory();
   if (typeof renderProducts === "function") renderProducts();
   alert("تم تعديل بيانات المنتج وأسعاره بنجاح. السعر الحالي والسعر الرسمي وأسعار المقاسات/النكهات اتحدثوا.");
@@ -307,7 +313,10 @@ function editProduct(id) {
 function removeProduct(id) {
   if (!confirm("هل أنت متأكد من حذف هذا المنتج نهائياً من المتجر؟")) return;
   products = products.filter(p => p.id !== id);
-  saveStoreProducts(products);
+  localStorage.setItem("vantor_products_v4", JSON.stringify(products));
+  if (window.VantorCloud && window.VantorCloud.ready) {
+    window.VantorCloud.deleteProduct(id);
+  }
   renderAdminInventory();
 }
 
@@ -324,7 +333,35 @@ function parseVariantPrices(raw) {
   return result;
 }
 
-document.getElementById("adminAddProductForm").addEventListener("submit", function (e) {
+// ضغط الصورة تلقائياً لتقليل حجمها وضمان سرعة التحميل وعدم تجاوز حدود Firestore
+function compressImageFile(file, maxWidth = 800, quality = 0.78) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let w = img.width;
+        let h = img.height;
+        if (w > maxWidth) {
+          h = Math.round((h * maxWidth) / w);
+          w = maxWidth;
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = ev.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("adminAddProductForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const nameAr = document.getElementById("prodNameAr").value.trim();
@@ -368,23 +405,36 @@ document.getElementById("adminAddProductForm").addEventListener("submit", functi
       badge
     };
     products.unshift(newProduct);
-    saveStoreProducts(products);
+    localStorage.setItem("vantor_products_v4", JSON.stringify(products));
+    if (window.VantorCloud && window.VantorCloud.ready) {
+      window.VantorCloud.syncSingleProduct(newProduct);
+    }
     renderAdminInventory();
     document.getElementById("adminAddProductForm").reset();
     alert("🚀 تم إضافة ونشر المنتج في المتجر بنجاح!");
   };
 
   if (imageFile) {
-    const reader = new FileReader();
-    reader.onload = ev => finalizeAdd(ev.target.result);
-    reader.readAsDataURL(imageFile);
+    try {
+      const compressedDataUrl = await compressImageFile(imageFile);
+      finalizeAdd(compressedDataUrl);
+    } catch (err) {
+      const reader = new FileReader();
+      reader.onload = ev => finalizeAdd(ev.target.result);
+      reader.readAsDataURL(imageFile);
+    }
   } else {
     finalizeAdd(imageUrl);
   }
 });
 
-document.getElementById("resetAllBtn").addEventListener("click", () => {
+document.getElementById("resetAllBtn").addEventListener("click", async () => {
   if (!confirm("هل تريد استعادة المنتجات الافتراضية؟")) return;
+  if (window.VantorCloud && window.VantorCloud.ready) {
+    for (const oldP of products) {
+      await window.VantorCloud.deleteProduct(oldP.id);
+    }
+  }
   products = [...DEFAULT_PRODUCTS];
   saveStoreProducts(products);
   renderAdminInventory();

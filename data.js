@@ -2,10 +2,6 @@
 // إعدادات الحماية (SHA-256) وقاعدة البيانات السحابية (Firebase)
 // ==========================================================
 
-// هاش SHA-256 الافتراضي لكلمة المرور: vantor
-// لتغيير كلمة المرور: افتح Console المتصفح واكتب:
-// hashPassword("باسوردك_الجديد").then(console.log)
-// ثم ضع الناتج مكان ADMIN_PASSWORD_HASH
 const ADMIN_CONFIG = {
   username: "maro",
   passwordHash: "f839701fa153ba45924dc3ae9bb0972bb126ad5387fc171bc09f985d257d66dc", // SHA-256 of "vantor"
@@ -13,8 +9,6 @@ const ADMIN_CONFIG = {
   lockoutSeconds: 60
 };
 
-// إعدادات Firebase Firestore (اختيارية لربط المتجر أونلاين لكل الزوار)
-// عند إضافة بيانات مشروعك من Firebase Console هنا، سيعمل الربط السحابي تلقائياً
 const FIREBASE_CONFIG = {
   enabled: true,
   apiKey: "AIzaSyCUX77RZTOFRggINZMRKxng820NfAtOuFc",
@@ -41,8 +35,6 @@ const DEFAULT_SETTINGS = {
   heroTitleEn: "ELEVATE YOUR PERFORMANCE WITH <span>VANTOR.EGY</span>",
   heroSubAr: "أقوى خامات الملابس الرياضية الـ Compression والـ Oversized مع أفضل المكملات الأصلية المعتمدة لتصل لأقصى فورمة.",
   heroSubEn: "High-performance compression & oversized gym wear alongside 100% authentic sports nutrition.",
-  heroTitleAr: "ارتقِ بأدائك في الجيم مع <span>VANTOR.EGY</span>",
-  heroTitleEn: "ELEVATE YOUR PERFORMANCE WITH <span>VANTOR.EGY</span>",
   contentAr: {},
   contentEn: {}
 };
